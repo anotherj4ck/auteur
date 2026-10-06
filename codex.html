@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codex du Greatland — Gaël Rautureau</title>
+  <meta name="description" content="Le Codex du Greatland : planches d'étude des peuples et des demeures de l'univers des Récits du Greatland, par Gaël Rautureau.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Rajdhani:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* Le Codex : une archive à la bougie. Fond de forêt nocturne, encre et parchemin,
+       accent mousse dorée repris de la section Greatland. */
+    :root {
+      --bg: #0d110b;
+      --panel: rgba(228,214,170,0.04);
+      --line: rgba(185,196,127,0.22);
+      --ink: #e4e2cc;
+      --ink-dim: rgba(228,226,204,0.68);
+      --accent: #b9c47f;
+      --dim: #7d8656;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --display: 'Cinzel', 'Times New Roman', serif;
+      --label: 'Rajdhani', 'Segoe UI', sans-serif;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    html { scroll-behavior: smooth; }
+    body {
+      background:
+        radial-gradient(ellipse 70% 40% at 50% 0%, rgba(120,40,20,0.16), transparent 70%),
+        var(--bg);
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    a { color: inherit; }
+    :focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
+
+    .wrap { max-width: 1240px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* EN-TÊTE */
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding-block: 1.5rem;
+    }
+    .back {
+      font-family: var(--display);
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      text-decoration: none;
+    }
+    .back:hover { color: var(--accent); }
+    .author {
+      font-family: var(--display);
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #c8a96e;
+      text-decoration: none;
+    }
+    header.intro { padding-block: 3rem 2.5rem; max-width: 46rem; }
+    .intro-kicker {
+      font-family: var(--display);
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-family: var(--display);
+      font-weight: 400;
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      line-height: 1.05;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+      text-wrap: balance;
+    }
+    .intro p {
+      margin-top: 1.4rem;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--ink-dim);
+    }
+
+    /* RUBRIQUES */
+    .rubrique { padding-block: 1.5rem 3rem; }
+    .rubrique-titre {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-family: var(--display);
+      font-weight: 400;
+      font-size: 1.1rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.8rem;
+    }
+    .rubrique-titre::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+
+    /* Les planches gardent leur format : disposition en colonnes */
+    .planches { columns: 3 320px; column-gap: 1.6rem; list-style: none; }
+    .planche { break-inside: avoid; margin-bottom: 1.8rem; }
+    .planche button {
+      all: unset;
+      display: block;
+      width: 100%;
+      cursor: zoom-in;
+    }
+    .planche figure {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 0.7rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .planche button:hover figure,
+    .planche button:focus-visible figure { border-color: var(--accent); transform: translateY(-3px); }
+    .planche img { display: block; width: 100%; height: auto; }
+    .planche figcaption {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.8rem 0.2rem 0.1rem;
+    }
+    .planche-nom {
+      font-family: var(--display);
+      font-size: 1rem;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .folio {
+      font-family: var(--label);
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--dim);
+      white-space: nowrap;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding-block: 2.5rem;
+      text-align: center;
+      font-style: italic;
+      color: var(--dim);
+      font-size: 0.95rem;
+    }
+
+    /* VISIONNEUSE AVEC ZOOM */
+    .viewer {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      background: #060805;
+      color: var(--ink);
+    }
+    .v-top, .v-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.8rem 1rem;
+    }
+    .v-title { min-width: 0; }
+    .v-title strong {
+      display: block;
+      font-family: var(--display);
+      font-weight: 400;
+      font-size: 1.15rem;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+    }
+    .v-title span { font-family: var(--label); font-size: 0.8rem; letter-spacing: 0.15em; color: var(--dim); text-transform: uppercase; }
+    .v-stage {
+      position: relative;
+      overflow: hidden;
+      touch-action: none;
+      cursor: zoom-in;
+      user-select: none;
+    }
+    .v-stage.zoomed { cursor: grab; }
+    .v-stage.dragging { cursor: grabbing; }
+    .v-stage img {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      max-width: calc(100% - 2rem);
+      max-height: calc(100% - 1rem);
+      transform-origin: center center;
+      will-change: transform;
+      -webkit-user-drag: none;
+    }
+    .v-entree {
+      max-width: 46rem;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--ink-dim);
+    }
+    .v-tools { display: flex; gap: 0.5rem; flex-shrink: 0; }
+    .v-btn {
+      all: unset;
+      cursor: pointer;
+      width: 2.6rem;
+      height: 2.6rem;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      line-height: 1;
+      color: var(--accent);
+    }
+    .v-btn:hover, .v-btn:focus-visible { border-color: var(--accent); background: rgba(185,196,127,0.08); }
+    .v-btn[hidden] { display: none; }
+    .v-hint { font-family: var(--label); font-size: 0.8rem; letter-spacing: 0.08em; color: var(--dim); }
+
+    @media (max-width: 700px) {
+      .top { padding-block: 1rem; }
+      .author { display: none; }
+      header.intro { padding-block: 1.5rem 1.5rem; }
+      .planches { columns: 1; }
+      .v-bottom { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.75rem; }
+      .v-hint, .v-entree { text-align: center; font-size: 0.8rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .planche figure { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <a class="back" href="index.html#greatland">‹ Retour au Greatland</a>
+      <a class="author" href="index.html">Gaël Rautureau</a>
+    </div>
+
+    <header class="intro">
+      <div class="intro-kicker">Les Récits du Greatland</div>
+      <h1>Le Codex</h1>
+      <p>Peuples, anatomies et demeures du Greatland, consignés planche après planche. Clique sur une planche pour l'ouvrir, puis zoome pour lire les annotations.</p>
+    </header>
+
+    <main id="codex"></main>
+  </div>
+
+  <footer>© Gaël Rautureau. Textes et illustrations : tous droits réservés.</footer>
+
+  <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-labelledby="v-nom" hidden>
+    <div class="v-top">
+      <div class="v-title">
+        <strong id="v-nom"></strong>
+        <span id="v-folio"></span>
+      </div>
+      <div class="v-tools">
+        <button class="v-btn" type="button" id="v-out" aria-label="Dézoomer">−</button>
+        <button class="v-btn" type="button" id="v-in" aria-label="Zoomer">+</button>
+        <button class="v-btn" type="button" id="v-close" aria-label="Fermer">×</button>
+      </div>
+    </div>
+    <div class="v-stage" id="v-stage">
+      <img id="v-img" src="" alt="" draggable="false">
+    </div>
+    <div class="v-bottom">
+      <button class="v-btn" type="button" id="v-prev" aria-label="Planche précédente">‹</button>
+      <div>
+        <p class="v-entree" id="v-entree"></p>
+        <p class="v-hint" id="v-hint">Double-clic ou molette pour zoomer, glisser pour se déplacer.</p>
+      </div>
+      <button class="v-btn" type="button" id="v-next" aria-label="Planche suivante">›</button>
+    </div>
+  </div>
+
+  <script src="codex.js"></script>
+  <script>
+  (() => {
+    'use strict';
+    const data = window.CODEX || { rubriques: [], planches: [] };
+    const $ = id => document.getElementById(id);
+    const tactile = matchMedia('(pointer: coarse)').matches;
+    if (tactile) $('v-hint').textContent = 'Touche deux fois ou écarte deux doigts pour zoomer, glisse pour te déplacer.';
+
+    // Chiffres romains pour les folios
+    function romain(n) {
+      const t = [[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];
+      let r = '';
+      for (const [v, s] of t) while (n >= v) { r += s; n -= v; }
+      return r;
+    }
+
+    // ---------- Construction de l'archive (textContent partout) ----------
+    const ordre = [];
+    const main = $('codex');
+    for (const rub of data.rubriques) {
+      const liste = data.planches.filter(p => p.rubrique === rub.id);
+      if (!liste.length) continue;
+      const sec = document.createElement('section');
+      sec.className = 'rubrique';
+      const h2 = document.createElement('h2');
+      h2.className = 'rubrique-titre';
+      h2.textContent = rub.titre;
+      const ul = document.createElement('ul');
+      ul.className = 'planches';
+      for (const p of liste) {
+        const index = ordre.length;
+        p.folio = 'Folio ' + romain(index + 1);
+        ordre.push(p);
+        const li = document.createElement('li');
+        li.className = 'planche';
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.setAttribute('aria-label', 'Ouvrir la planche : ' + p.nom);
+        const fig = document.createElement('figure');
+        const img = document.createElement('img');
+        img.src = p.mini; img.alt = p.alt || p.nom; img.loading = 'lazy';
+        const cap = document.createElement('figcaption');
+        const nom = document.createElement('span'); nom.className = 'planche-nom'; nom.textContent = p.nom;
+        const fol = document.createElement('span'); fol.className = 'folio'; fol.textContent = p.folio;
+        cap.append(nom, fol);
+        fig.append(img, cap);
+        btn.append(fig);
+        btn.addEventListener('click', () => ouvrir(index, btn));
+        li.append(btn);
+        ul.append(li);
+      }
+      sec.append(h2, ul);
+      main.append(sec);
+    }
+
+    // ---------- Visionneuse ----------
+    const viewer = $('viewer'), stage = $('v-stage'), vimg = $('v-img');
+    let courant = 0, retour = null;
+    let s = 1, tx = 0, ty = 0;          // zoom et déplacement
+    const MIN = 1, MAX = 5;
+
+    function appliquer() {
+      // borne le déplacement pour ne jamais perdre l'image
+      const r = stage.getBoundingClientRect();
+      const w = vimg.offsetWidth * s, h = vimg.offsetHeight * s;
+      const mx = Math.max(0, (w - r.width) / 2), my = Math.max(0, (h - r.height) / 2);
+      tx = Math.min(mx, Math.max(-mx, tx));
+      ty = Math.min(my, Math.max(-my, ty));
+      vimg.style.transform = `translate(-50%, -50%) translate(${tx}px, ${ty}px) scale(${s})`;
+      stage.classList.toggle('zoomed', s > 1.01);
+    }
+    // zoome en gardant fixe le point (px, py) de l'écran
+    function zoomer(ns, px, py) {
+      ns = Math.min(MAX, Math.max(MIN, ns));
+      const r = stage.getBoundingClientRect();
+      const cx = (px ?? r.left + r.width / 2) - (r.left + r.width / 2);
+      const cy = (py ?? r.top + r.height / 2) - (r.top + r.height / 2);
+      tx = cx - (cx - tx) * (ns / s);
+      ty = cy - (cy - ty) * (ns / s);
+      s = ns;
+      if (s === 1) { tx = 0; ty = 0; }
+      appliquer();
+    }
+    function reinit() { s = 1; tx = 0; ty = 0; appliquer(); }
+
+    function afficher() {
+      const p = ordre[courant];
+      vimg.src = p.image;
+      vimg.alt = p.alt || p.nom;
+      $('v-nom').textContent = p.nom;
+      $('v-folio').textContent = p.folio + ' · ' + (courant + 1) + ' / ' + ordre.length;
+      $('v-entree').textContent = p.entree || '';
+      $('v-entree').hidden = !p.entree;
+      reinit();
+    }
+    vimg.addEventListener('load', reinit);
+    function ouvrir(i, depuis) {
+      courant = i; retour = depuis;
+      viewer.hidden = false;
+      document.body.style.overflow = 'hidden';
+      afficher();
+      $('v-close').focus();
+    }
+    function fermer() {
+      viewer.hidden = true;
+      document.body.style.overflow = '';
+      if (retour) retour.focus();
+    }
+    function bouger(pas) { courant = (courant + pas + ordre.length) % ordre.length; afficher(); }
+
+    $('v-close').addEventListener('click', fermer);
+    $('v-prev').addEventListener('click', () => bouger(-1));
+    $('v-next').addEventListener('click', () => bouger(1));
+    $('v-in').addEventListener('click', () => zoomer(s * 1.6));
+    $('v-out').addEventListener('click', () => zoomer(s / 1.6));
+    document.addEventListener('keydown', e => {
+      if (viewer.hidden) return;
+      if (e.key === 'Escape') fermer();
+      else if (e.key === 'ArrowLeft') bouger(-1);
+      else if (e.key === 'ArrowRight') bouger(1);
+      else if (e.key === '+' || e.key === '=') zoomer(s * 1.6);
+      else if (e.key === '-') zoomer(s / 1.6);
+    });
+    stage.addEventListener('wheel', e => {
+      e.preventDefault();
+      zoomer(s * Math.exp(-e.deltaY * 0.0015), e.clientX, e.clientY);
+    }, { passive: false });
+    stage.addEventListener('dblclick', e => zoomer(s > 1.01 ? 1 : 2.5, e.clientX, e.clientY));
+
+    // Doigts et souris : glisser pour se déplacer, pincer pour zoomer,
+    // balayer pour changer de planche quand on n'est pas zoomé, double-tap pour zoomer.
+    const pts = new Map();
+    let geste = null, dernierTap = 0;
+    stage.addEventListener('pointerdown', e => {
+      stage.setPointerCapture(e.pointerId);
+      pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (pts.size === 2) {
+        const [a, b] = [...pts.values()];
+        geste = { type: 'pince', d0: Math.hypot(a.x - b.x, a.y - b.y), s0: s };
+      } else {
+        geste = { type: 'glisse', x0: e.clientX, y0: e.clientY, lx: e.clientX, ly: e.clientY, bouge: false };
+      }
+    });
+    stage.addEventListener('pointermove', e => {
+      if (!pts.has(e.pointerId) || !geste) return;
+      pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (geste.type === 'pince' && pts.size === 2) {
+        const [a, b] = [...pts.values()];
+        const d = Math.hypot(a.x - b.x, a.y - b.y);
+        zoomer(geste.s0 * d / geste.d0, (a.x + b.x) / 2, (a.y + b.y) / 2);
+      } else if (geste.type === 'glisse') {
+        if (Math.hypot(e.clientX - geste.x0, e.clientY - geste.y0) > 6) geste.bouge = true;
+        if (s > 1.01) {
+          tx += e.clientX - geste.lx; ty += e.clientY - geste.ly;
+          stage.classList.add('dragging');
+          appliquer();
+        }
+        geste.lx = e.clientX; geste.ly = e.clientY;
+      }
+    });
+    function fin(e) {
+      if (!pts.has(e.pointerId)) return;
+      pts.delete(e.pointerId);
+      stage.classList.remove('dragging');
+      if (!geste) return;
+      if (geste.type === 'glisse' && e.type === 'pointerup') {
+        const dx = e.clientX - geste.x0;
+        if (s <= 1.01 && geste.bouge && Math.abs(dx) > 60) bouger(dx < 0 ? 1 : -1);
+        else if (!geste.bouge && e.pointerType !== 'mouse') {
+          const t = performance.now();
+          if (t - dernierTap < 300) zoomer(s > 1.01 ? 1 : 2.5, e.clientX, e.clientY);
+          dernierTap = t;
+        }
+      }
+      if (pts.size === 0) geste = null;
+    }
+    stage.addEventListener('pointerup', fin);
+    stage.addEventListener('pointercancel', fin);
+    addEventListener('resize', () => { if (!viewer.hidden) appliquer(); });
+  })();
+  </script>
+</body>
+</html>

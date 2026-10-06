@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gaël Rautureau — Auteur</title>
+  <meta name="description" content="Gaël Rautureau, auteur de science-fiction et de fantasy : Ascendant, Ankoria 2099 et d'autres univers.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Rajdhani:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --asc-bg: #1a1208;
+      --asc-primary: #c8a96e;
+      --asc-text: #d4c4a0;
+      --asc-dim: #8a7355;
+      --asc-red: #8b3a2a;
+
+
+      --ank-bg: #0d0a06;
+      --ank-primary: #d4820a;
+      --ank-text: #e8c878;
+      --ank-steel: #8898a8;
+      --ank-glow: #ff9820;
+    }
+
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+
+    body {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      background: #0d0a06;
+      color: #d4c4a0;
+    }
+    /* Le curseur décoratif n'existe qu'avec une souris (jamais sur écran tactile) */
+    .cursor, .cursor-ring { display: none; }
+    @media (hover: hover) and (pointer: fine) {
+      .cursor, .cursor-ring { display: block; }
+    }
+
+    /* CURSOR */
+    .cursor {
+      position: fixed;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(200,169,110,0.9);
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: background 0.3s, transform 0.15s;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(200,169,110,0.4);
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.12s ease, width 0.3s, height 0.3s, border-color 0.3s;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      /* fond plus opaque : le menu reste lisible quand il passe sur le texte et les images */
+      background: linear-gradient(to bottom, rgba(10,8,4,0.97) 55%, rgba(10,8,4,0));
+      mix-blend-mode: normal;
+    }
+    .nav-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: #c8a96e;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      color: rgba(212,196,160,0.6);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: #c8a96e; }
+
+    /* HERO */
+    #hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      background: #0d0a06;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(139,58,42,0.08) 0%, transparent 70%),
+                  radial-gradient(ellipse 40% 40% at 20% 80%, rgba(200,169,110,0.04) 0%, transparent 60%);
+    }
+    .hero-line {
+      position: absolute;
+      top: 50%;
+      left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(200,169,110,0.15), transparent);
+      transform: translateY(-40px);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+    .hero-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      color: #8a7355;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 1s 0.3s forwards;
+    }
+    .hero-name {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: #c8a96e;
+      line-height: 1;
+      opacity: 0;
+      animation: fadeUp 1s 0.6s forwards;
+    }
+    .hero-divider {
+      width: 60px;
+      height: 1px;
+      background: #8a7355;
+      margin: 2rem auto;
+      opacity: 0;
+      animation: fadeUp 1s 0.9s forwards;
+    }
+    .hero-tagline {
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      font-style: italic;
+      font-weight: 300;
+      color: rgba(212,196,160,0.7);
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.7;
+      opacity: 0;
+      animation: fadeUp 1s 1.2s forwards;
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 3rem;
+      left: 0;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 1s 1.8s forwards;
+    }
+    .hero-scroll span {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: #8a7355;
+      text-transform: uppercase;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, #8a7355, transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    /* SECTIONS UNIVERS */
+    .universe {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* BG IMAGES */
+    .universe-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      transition: opacity 0.5s;
+    }
+    .universe-overlay {
+      position: absolute;
+      inset: 0;
+    }
+
+    /* ===== ASCENDANT ===== */
+    #ascendant .universe-bg {
+      background-image: url('assets/ascendant.webp');
+      filter: sepia(0.4) brightness(0.35) contrast(1.1);
+    }
+    #ascendant .universe-overlay {
+      background: linear-gradient(135deg,
+        rgba(26,18,8,0.85) 0%,
+        rgba(26,18,8,0.4) 50%,
+        rgba(139,58,42,0.15) 100%);
+    }
+    #ascendant { --accent: #c8a96e; --dim: #8a7355; }
+
+    /* ===== LES RÉCITS DU GREATLAND ===== */
+    /* Fantasy : forêt profonde et ciel de couchant, accent mousse dorée */
+    #greatland {
+      --accent: #b9c47f;
+      --dim: #7d8656;
+      --gl-text: rgba(228,226,204,0.88);
+      background: #0d110b;
+    }
+    #greatland .universe-bg {
+      background-image: url('assets/greatland.webp');
+      filter: brightness(0.42) saturate(1.05);
+    }
+    #greatland .universe-overlay {
+      background: linear-gradient(180deg,
+        rgba(13,17,11,0.9) 0%,
+        rgba(13,17,11,0.45) 45%,
+        rgba(120,40,20,0.18) 75%,
+        rgba(13,17,11,0.92) 100%);
+    }
+    #greatland .universe-number,
+    #greatland .universe-subtitle,
+    #greatland .meta-item { color: var(--dim); }
+    #greatland .universe-description { color: var(--gl-text); }
+    /* les étoiles deviennent des lucioles dorées */
+    #greatland .star { background: #f0d48a; }
+
+    /* Aperçu du codex dans la section */
+    .codex-teaser { display: flex; flex-direction: column; gap: 1.2rem; }
+    .codex-teaser-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .codex-teaser-plates {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.8rem;
+    }
+    .codex-teaser-plates img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      border: 1px solid rgba(185,196,127,0.25);
+      filter: sepia(0.15);
+    }
+    .codex-teaser p {
+      font-size: 1.05rem;
+      font-style: italic;
+      line-height: 1.6;
+      color: rgba(228,226,204,0.75);
+    }
+    .codex-link {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.75rem 1.4rem;
+      border: 1px solid var(--accent);
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      transition: background 0.3s, color 0.3s;
+    }
+    .codex-link:hover, .codex-link:focus-visible { background: var(--accent); color: #0d110b; }
+
+    /* ===== ANKORIA ===== */
+    #ankoria .universe-bg {
+      background-image: url('assets/ankoria.webp');
+      filter: brightness(0.3) saturate(0.9) contrast(1.2);
+    }
+    #ankoria .universe-overlay {
+      background: linear-gradient(135deg,
+        rgba(13,10,6,0.9) 0%,
+        rgba(13,10,6,0.45) 50%,
+        rgba(212,130,10,0.1) 100%);
+    }
+    #ankoria { --accent: #d4820a; --dim: #8a5a0a; }
+
+    /* ===== LE LABYRINTHE DES ÂMES ===== */
+    /* Fiction onirique : gris de brume, lueur rose d'aube, brouillard qui dérive */
+    #labyrinthe {
+      --accent: #dcaaa2;
+      --dim: #8a7378;
+      --lab-text: rgba(232,222,226,0.88);
+      background: #0e0c10;
+    }
+    #labyrinthe .universe-bg {
+      background-image: url('assets/labyrinthe.webp');
+      filter: brightness(0.5) saturate(0.85) contrast(1.05);
+    }
+    #labyrinthe .universe-overlay {
+      background: linear-gradient(160deg,
+        rgba(14,12,16,0.86) 0%,
+        rgba(14,12,16,0.45) 55%,
+        rgba(220,170,162,0.12) 100%);
+    }
+    #labyrinthe .universe-number,
+    #labyrinthe .universe-subtitle,
+    #labyrinthe .meta-item { color: var(--dim); }
+    #labyrinthe .universe-extract p,
+    #labyrinthe .universe-description { color: var(--lab-text); }
+    #labyrinthe .extract-break { margin-top: 1.2rem; }
+    .mist {
+      position: absolute;
+      inset: -20%;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 40% 25% at 30% 60%, rgba(232,222,226,0.07), transparent 70%),
+        radial-gradient(ellipse 35% 20% at 70% 40%, rgba(220,170,162,0.06), transparent 70%),
+        radial-gradient(ellipse 50% 30% at 50% 85%, rgba(232,222,226,0.05), transparent 70%);
+      animation: drift 38s ease-in-out infinite alternate;
+    }
+    @keyframes drift {
+      from { transform: translate3d(-4%, 0, 0); }
+      to   { transform: translate3d(4%, -3%, 0); }
+    }
+
+    /* CONTENU UNIVERS */
+    .universe-content {
+      position: relative;
+      z-index: 2;
+      padding: 8rem 6rem;
+      max-width: 1400px;
+      width: 100%;
+    }
+
+    .universe-number {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      color: var(--dim);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .universe-number::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--dim);
+    }
+
+    .universe-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.5rem, 6vw, 5.5rem);
+      font-weight: 400;
+      color: var(--accent);
+      line-height: 1.05;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .universe-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--dim);
+      letter-spacing: 0.2em;
+      margin-bottom: 3rem;
+      text-transform: uppercase;
+    }
+
+    .universe-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .universe-extract {
+      position: relative;
+      padding-left: 2rem;
+      border-left: 1px solid var(--accent);
+    }
+    .universe-extract::before {
+      content: '"';
+      position: absolute;
+      top: -1.5rem;
+      left: 1.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      color: var(--accent);
+      opacity: 0.3;
+      line-height: 1;
+    }
+    .universe-extract p {
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.9;
+      color: rgba(212,196,160,0.85);
+    }
+
+    .universe-info { display: flex; flex-direction: column; gap: 2rem; }
+
+    .universe-description {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: rgba(212,196,160,0.88);
+      font-weight: 400;
+    }
+
+    .universe-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      color: var(--dim);
+      text-transform: uppercase;
+    }
+    .meta-item::before {
+      content: '';
+      display: block;
+      width: 6px; height: 6px;
+      border: 1px solid var(--accent);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    .universe-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.4rem 1.2rem;
+      border: 1px solid var(--accent);
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      color: var(--accent);
+      text-transform: uppercase;
+      align-self: flex-start;
+    }
+    .status-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* TRANSITION BANDE */
+    .universe-transition {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 120px;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    /* ÉTOILES pour section elfe */
+    .stars-container {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: white;
+      animation: twinkle var(--dur, 3s) ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+
+    /* GRILLE ANKORIA */
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(212,130,10,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212,130,10,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* GALERIE PERSONNAGES */
+    .gallery { margin-top: 3.5rem; }
+    .gallery-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.4rem;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1.6rem 1.2rem;
+      list-style: none;
+    }
+    .gallery-item button {
+      all: unset;
+      display: block;
+      width: 100%;
+      cursor: pointer;
+    }
+    .gallery-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      border: 1px solid rgba(200,169,110,0.18);
+      opacity: 0.85;
+      transition: opacity 0.3s, border-color 0.3s, transform 0.3s;
+    }
+    .gallery-item button:hover img,
+    .gallery-item button:focus-visible img {
+      opacity: 1;
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+    .gallery-item button:focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
+    .gallery-name {
+      display: block;
+      margin-top: 0.7rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+    }
+    .gallery-caption {
+      display: block;
+      margin-top: 0.2rem;
+      font-size: 0.95rem;
+      font-style: italic;
+      line-height: 1.4;
+      color: rgba(212,196,160,0.75);
+    }
+
+    /* FOOTER */
+    footer {
+      background: #0a0805;
+      padding: 4rem 3rem;
+      text-align: center;
+      border-top: 1px solid rgba(200,169,110,0.1);
+    }
+    .footer-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      color: #c8a96e;
+      letter-spacing: 0.2em;
+      margin-bottom: 1rem;
+    }
+    .footer-text {
+      font-size: 0.85rem;
+      color: #8a7355;
+      font-style: italic;
+      letter-spacing: 0.1em;
+    }
+
+    /* LIGHTBOX */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* VISIONNEUSE */
+    #lightbox[hidden] { display: none; }
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      background: rgba(8,6,3,0.95);
+    }
+    .lb-figure {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: min(90vw, 560px);
+    }
+    .lb-figure img {
+      display: block;
+      max-width: 100%;
+      max-height: calc(100vh - 11rem);
+      aspect-ratio: 3 / 4;
+      object-fit: contain;
+      border: 1px solid rgba(200,169,110,0.25);
+    }
+    .lb-figure figcaption { text-align: center; margin-top: 1rem; }
+    .lb-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.08em;
+      color: #c8a96e;
+    }
+    .lb-caption {
+      font-style: italic;
+      font-size: 1.05rem;
+      color: rgba(212,196,160,0.8);
+      margin-top: 0.3rem;
+    }
+    .lb-bio {
+      font-size: 1.1rem;
+      line-height: 1.65;
+      color: rgba(212,196,160,0.9);
+      margin-top: 1rem;
+      max-width: 34rem;
+    }
+    .lb-traits {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      list-style: none;
+      margin-top: 1rem;
+    }
+    .lb-traits li {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #c8a96e;
+      border: 1px solid rgba(200,169,110,0.4);
+      padding: 0.2rem 0.7rem;
+    }
+    .lb-bio:empty, .lb-traits:empty { display: none; }
+    /* Avec une présentation : image à gauche, fiche à droite (grands écrans) */
+    @media (min-width: 901px) {
+      .lb-figure.has-bio {
+        flex-direction: row;
+        align-items: center;
+        gap: 2.5rem;
+        max-width: min(90vw, 1000px);
+      }
+      .lb-figure.has-bio img { max-width: 440px; }
+      .lb-figure.has-bio figcaption { text-align: left; margin-top: 0; max-width: 26rem; }
+      .lb-figure.has-bio .lb-traits { justify-content: flex-start; }
+    }
+    .lb-count {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      color: #8a7355;
+      margin-top: 0.6rem;
+    }
+    .lb-btn {
+      all: unset;
+      cursor: pointer;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem;
+      line-height: 1;
+      color: #c8a96e;
+      width: 3rem;
+      height: 3rem;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(200,169,110,0.3);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .lb-btn:hover, .lb-btn:focus-visible { border-color: #c8a96e; background: rgba(200,169,110,0.08); }
+    .lb-btn[hidden] { display: none; }
+    .lb-close { position: absolute; top: 1rem; right: 1rem; font-size: 1.8rem; }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.6); }
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: var(--min-op, 0.1); transform: scale(1); }
+      50% { opacity: var(--max-op, 0.8); transform: scale(1.3); }
+    }
+
+    /* TABLETTE ET TÉLÉPHONE */
+    @media (max-width: 900px) {
+      nav {
+        padding: 1rem 1.25rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+      .nav-links { gap: 0.4rem 1.2rem; flex-wrap: wrap; }
+      .nav-links a { font-size: 0.8rem; letter-spacing: 0.1em; }
+      .universe-content { padding: 8rem 1.25rem 7rem; }
+      .universe-body { grid-template-columns: 1fr; gap: 2.5rem; }
+      .universe-extract { padding-left: 1.25rem; }
+      .universe-subtitle { letter-spacing: 0.1em; }
+      .universe-number { letter-spacing: 0.25em; }
+      /* background-attachment: fixed ne marche pas sur iPhone et rame sur mobile */
+      .universe-bg { background-attachment: scroll; }
+      .hero-tagline { padding: 0 1.25rem; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 1.4rem 1rem; }
+      #lightbox { padding: 1rem; gap: 0; }
+      #lightbox .lb-prev, #lightbox .lb-next {
+        position: absolute; bottom: 1.5rem; width: 2.75rem; height: 2.75rem; font-size: 2rem;
+      }
+      #lightbox .lb-prev { left: calc(50% - 4rem); }
+      #lightbox .lb-next { right: calc(50% - 4rem); }
+      .lb-figure img { max-height: calc(100vh - 13rem); }
+      /* Avec une présentation, l'image rétrécit et le texte défile si besoin */
+      #lightbox { overflow-y: auto; align-items: flex-start; padding-top: 4rem; padding-bottom: 6rem; }
+      .lb-figure.has-bio img { max-height: 45vh; width: auto; }
+      .lb-bio { font-size: 1.05rem; }
+    }
+
+    /* REVEAL AU SCROLL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.15s; }
+    .reveal-delay-2 { transition-delay: 0.3s; }
+    .reveal-delay-3 { transition-delay: 0.45s; }
+    .reveal-delay-4 { transition-delay: 0.6s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .hero-eyebrow, .hero-name, .hero-divider, .hero-tagline, .hero-scroll { animation: none; opacity: 1; }
+      .star, .status-dot, .scroll-line, .mist { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-name">Gaël Rautureau</a>
+    <ul class="nav-links">
+      <li><a href="#ascendant">Ascendant</a></li>
+      <li><a href="#labyrinthe">Le Labyrinthe des Âmes</a></li>
+      <li><a href="#greatland">Les Récits du Greatland</a></li>
+      <li><a href="#ankoria">Ankoria 2099</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-line"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Auteur — Science-Fiction & Fantasy</p>
+      <h1 class="hero-name">Gaël<br>Rautureau</h1>
+      <div class="hero-divider"></div>
+      <p class="hero-tagline">Je ne raconte pas des histoires. Je construis des mondes où tu oublies le tien.</p>
+    </div>
+    <div class="hero-scroll">
+      <span>Découvrir</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ASCENDANT -->
+  <section class="universe" id="ascendant">
+    <div class="universe-bg"></div>
+    <div class="universe-overlay"></div>
+    <div class="universe-content">
+      <div class="universe-number reveal">I — Dystopie urbaine</div>
+      <h2 class="universe-title reveal reveal-delay-1">Ascendant</h2>
+      <p class="universe-subtitle reveal reveal-delay-2">Londres, après l'effondrement</p>
+      <div class="universe-body">
+        <div class="universe-extract reveal reveal-delay-2">
+          <p>Le cliquetis des outils se perdait dans l'écho métallique des couloirs. L'odeur d'huile rance et d'humidité stagnait dans l'air comme une seconde peau. Assise en tailleur sous une conduite fissurée, Elara Ashcroft resserrait les fixations d'un module de synchronisation — l'un de ces boîtiers que la Maintenance entretenait sans jamais en expliquer le fonctionnement.</p>
+          <p style="margin-top:1.2rem">Elle en avait vu des dizaines, parfois ouverts, parfois en panne, et toujours reliés à ce réseau de fibres translucides qui pulsaient doucement d'un rouge sourd.</p>
+        </div>
+        <div class="universe-info reveal reveal-delay-3">
+          <p class="universe-description">Née dans Londinium, Elara Ashcroft n'a jamais eu de raison de douter. Le système est juste, la Maintenance est son foyer, et les fibres qui pulsent sous les murs n'ont pas besoin d'être comprises — seulement entretenues. Jusqu'au jour où voir devient impossible à éviter.</p>
+          <div class="universe-meta">
+            <div class="meta-item">Dystopie — Post-apocalyptique</div>
+            <div class="meta-item">Londres, XXII<sup>e</sup> siècle</div>
+            <div class="meta-item">Série — Tome I & II</div>
+          </div>
+          <div class="universe-status">
+            <div class="status-dot"></div>
+            Soumis à l'édition
+          </div>
+        </div>
+      </div>
+      <section class="gallery reveal" aria-label="Personnages d'Ascendant">
+        <h3 class="gallery-title">Personnages</h3>
+        <ul class="gallery-grid" data-galerie="ascendant"></ul>
+      </section>
+    </div>
+    <svg class="universe-transition" viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0,0 C360,120 1080,0 1440,80 L1440,120 L0,120 Z" fill="#0e0c10" opacity="0.95"/>
+    </svg>
+  </section>
+
+  <!-- LE LABYRINTHE DES ÂMES -->
+  <section class="universe" id="labyrinthe">
+    <div class="universe-bg"></div>
+    <div class="universe-overlay"></div>
+    <div class="mist" aria-hidden="true"></div>
+    <div class="universe-content">
+      <div class="universe-number reveal">II — Romance onirique</div>
+      <h2 class="universe-title reveal reveal-delay-1">Le Labyrinthe<br>des Âmes</h2>
+      <p class="universe-subtitle reveal reveal-delay-2">Quoi qu'il arrive, leurs chemins se rejoindront</p>
+      <div class="universe-body">
+        <div class="universe-extract reveal reveal-delay-2">
+          <p>Aidan chercha ses mots, mais avant qu'il ne puisse répondre, un son transperça l'air.</p>
+          <p class="extract-break">La cloche de la ville retentit. Trop forte. Anormalement forte.</p>
+          <p class="extract-break">Une douleur brutale lui traversa le crâne. […] Tout devint flou. Il n'y avait plus que la cloche, résonnant encore et encore, et ce flot de souvenirs qui l'envahissait sans retenue.</p>
+          <p class="extract-break">La douceur de sa main. Son regard bleu. Le son de sa voix. L'éclat de ses cheveux blonds au soleil.</p>
+          <p class="extract-break">Elle. Toujours elle.</p>
+        </div>
+        <div class="universe-info reveal reveal-delay-3">
+          <p class="universe-description">Aidan connaît Marine depuis toujours : elle est la sœur de son meilleur ami. Un soir d'hiver, dans un train immobilisé, ils se parlent vraiment pour la première fois, et il ne s'en remettra jamais. Des années après un aveu repoussé, ils ne se voient plus : elle s'apprête à se marier, lui s'efface lentement du monde. Puis le réel commence à se fissurer, et une nuit, leurs rêves se rejoignent dans un labyrinthe où chaque porte mène à ce qu'ils n'ont jamais osé se dire.</p>
+          <div class="universe-meta">
+            <div class="meta-item">Romance onirique</div>
+            <div class="meta-item">Roman</div>
+          </div>
+          <div class="universe-status">
+            <div class="status-dot"></div>
+            Soumis à l'édition
+          </div>
+        </div>
+      </div>
+      <section class="gallery reveal" aria-label="Personnages du Labyrinthe des Âmes">
+        <h3 class="gallery-title">Personnages</h3>
+        <ul class="gallery-grid" data-galerie="labyrinthe"></ul>
+      </section>
+    </div>
+    <svg class="universe-transition" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,30 C420,110 1020,0 1440,70 L1440,120 L0,120 Z" fill="#0d110b" opacity="0.97"/>
+    </svg>
+  </section>
+
+  <!-- LES RÉCITS DU GREATLAND -->
+  <section class="universe" id="greatland">
+    <div class="universe-bg"></div>
+    <div class="universe-overlay"></div>
+    <div class="stars-container" id="stars"></div>
+    <div class="universe-content">
+      <div class="universe-number reveal">III — Fantasy</div>
+      <h2 class="universe-title reveal reveal-delay-1">Les Récits<br>du Greatland</h2>
+      <p class="universe-subtitle reveal reveal-delay-2">Entre les royaumes des hommes et des anciens</p>
+      <div class="universe-body">
+        <div class="codex-teaser reveal reveal-delay-2">
+          <div class="codex-teaser-label">Le Codex</div>
+          <div class="codex-teaser-plates" aria-hidden="true">
+            <img src="assets/codex/planche-3-mini.webp" alt="" loading="lazy" width="448" height="560">
+            <img src="assets/codex/planche-1-mini.webp" alt="" loading="lazy" width="373" height="560">
+            <img src="assets/codex/planche-7-mini.webp" alt="" loading="lazy" width="560" height="373">
+          </div>
+          <p>Peuples, anatomies et demeures du Greatland, consignés planche après planche.</p>
+          <a class="codex-link" href="codex.html">Ouvrir le codex</a>
+        </div>
+        <div class="universe-info reveal reveal-delay-3">
+          <p class="universe-description">Dans le Greatland, les elfes offrent l'immortalité aux humains qui leur prêtent serment, sans leur dire que ce serment est une laisse. Le premier d'entre eux a déserté. Il porte une arme terrifiante qui relève les morts, et son armée ravage le Greatland. Tóm est né sur un champ de bataille et n'a jamais rien connu d'autre que le combat, jusqu'à sa rencontre avec Nel, princesse Ir Alfnar, une elfe pure. Cette rencontre marquera le Greatland à jamais.</p>
+          <div class="universe-meta">
+            <div class="meta-item">Fantasy</div>
+            <div class="meta-item">Le Greatland</div>
+          </div>
+          <div class="universe-status">
+            <div class="status-dot"></div>
+            En développement
+          </div>
+        </div>
+      </div>
+    </div>
+    <svg class="universe-transition" viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0,40 C400,0 1000,120 1440,20 L1440,120 L0,120 Z" fill="#0d0a06" opacity="0.97"/>
+    </svg>
+  </section>
+
+  <!-- ANKORIA 2099 -->
+  <section class="universe" id="ankoria">
+    <div class="universe-bg"></div>
+    <div class="universe-overlay"></div>
+    <div class="grid-overlay"></div>
+    <div class="universe-content">
+      <div class="universe-number reveal" style="color: #8a5a0a;">IV — Science-Fiction</div>
+      <h2 class="universe-title reveal reveal-delay-1" style="color: #d4820a;">Ankoria 2099</h2>
+      <p class="universe-subtitle reveal reveal-delay-2" style="color: #8a5a0a;">La Cité Mondiale. L'ordre parfait. Le mensonge total.</p>
+      <div class="universe-body">
+        <div class="universe-extract reveal reveal-delay-2" style="border-left-color: #d4820a;">
+          <p style="color: rgba(232,200,120,0.85)">En 2099, l'humanité se croit enfin arrivée. Les guerres, le chaos judiciaire, l'injustice institutionnelle — tout ça appartient aux siècles barbares. Le monde est désormais gouverné par un système unique, supranational, la Cité Mondiale, dont l'autorité surpasse celle de chaque nation.</p>
+          <p style="margin-top:1.2rem; color: rgba(232,200,120,0.85)">Aucun pays ne peut la contester. Aucune loi locale ne peut la contredire.</p>
+        </div>
+        <div class="universe-info reveal reveal-delay-3">
+          <p class="universe-description" style="color: rgba(232,200,120,0.85)">Dans un monde unifié sous un seul système de gouvernance, la paix n'est plus une aspiration — c'est une contrainte. Un récit sur les illusions du progrès, l'effacement de la dissidence, et ceux qui osent encore questionner.</p>
+          <div class="universe-meta">
+            <div class="meta-item" style="color: #8a5a0a;">Science-Fiction — Dystopie politique</div>
+            <div class="meta-item" style="color: #8a5a0a;">Ankoria, 2099</div>
+            <div class="meta-item" style="color: #8a5a0a;">Projet — En réflexion</div>
+          </div>
+          <div class="universe-status" style="border-color: #d4820a; color: #d4820a;">
+            <div class="status-dot" style="background: #d4820a;"></div>
+            En développement
+          </div>
+        </div>
+      </div>
+    </div>
+    <svg class="universe-transition" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,60 C480,0 960,120 1440,30 L1440,120 L0,120 Z" fill="#0a0805" opacity="0.97"/>
+    </svg>
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-name">Gaël Rautureau</div>
+    <p class="footer-text">Auteur — Science-Fiction & Fantasy</p>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" role="dialog" aria-modal="true" aria-label="Image agrandie" hidden>
+    <button class="lb-btn lb-close" type="button" aria-label="Fermer">×</button>
+    <button class="lb-btn lb-prev" type="button" aria-label="Image précédente">‹</button>
+    <figure class="lb-figure">
+      <img id="lb-img" src="" alt="">
+      <figcaption>
+        <div class="lb-name" id="lb-name"></div>
+        <div class="lb-caption" id="lb-caption"></div>
+        <p class="lb-bio" id="lb-bio"></p>
+        <ul class="lb-traits" id="lb-traits" aria-label="Traits"></ul>
+        <div class="lb-count" id="lb-count"></div>
+      </figcaption>
+    </figure>
+    <button class="lb-btn lb-next" type="button" aria-label="Image suivante">›</button>
+  </div>
+
+  <script src="galeries.js"></script>
+
+  <script>
+    // CURSOR
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top = my + 'px';
+    });
+    function animRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animRing);
+    }
+    animRing();
+
+    // ÉTOILES
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 120; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const size = Math.random() * 2.5 + 0.5;
+      s.style.cssText = `
+        left: ${Math.random() * 100}%;
+        top: ${Math.random() * 100}%;
+        width: ${size}px;
+        height: ${size}px;
+        --dur: ${2 + Math.random() * 4}s;
+        --delay: ${Math.random() * 5}s;
+        --min-op: ${0.05 + Math.random() * 0.1};
+        --max-op: ${0.5 + Math.random() * 0.5};
+      `;
+      starsContainer.appendChild(s);
+    }
+
+    // REVEAL AU SCROLL
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.15 });
+    reveals.forEach(r => observer.observe(r));
+
+    // GALERIES : construites à partir de galeries.js
+    // (textContent partout : un texte du fichier ne peut pas devenir du code)
+    const galeries = window.GALERIES || {};
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lb-img');
+    const lbName = document.getElementById('lb-name');
+    const lbCaption = document.getElementById('lb-caption');
+    const lbCount = document.getElementById('lb-count');
+    const lbBio = document.getElementById('lb-bio');
+    const lbTraits = document.getElementById('lb-traits');
+    const lbFigure = document.querySelector('.lb-figure');
+    let courante = [], index = 0, retourFocus = null;
+
+    document.querySelectorAll('[data-galerie]').forEach(ul => {
+      const liste = galeries[ul.dataset.galerie] || [];
+      if (!liste.length) { ul.closest('.gallery').hidden = true; return; }
+      liste.forEach((img, i) => {
+        const li = document.createElement('li');
+        li.className = 'gallery-item';
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.setAttribute('aria-label', 'Agrandir : ' + img.nom);
+        const vignette = document.createElement('img');
+        vignette.src = img.mini;
+        vignette.alt = img.alt || img.nom;
+        vignette.loading = 'lazy';
+        vignette.width = 384; vignette.height = 512;
+        const nom = document.createElement('span');
+        nom.className = 'gallery-name';
+        nom.textContent = img.nom;
+        btn.append(vignette, nom);
+        if (img.legende) {
+          const leg = document.createElement('span');
+          leg.className = 'gallery-caption';
+          leg.textContent = img.legende;
+          btn.append(leg);
+        }
+        btn.addEventListener('click', () => ouvrir(liste, i, btn));
+        li.append(btn);
+        ul.append(li);
+      });
+    });
+
+    function afficher() {
+      const img = courante[index];
+      lbImg.src = img.grande;
+      lbImg.alt = img.alt || img.nom;
+      lbName.textContent = img.nom;
+      lbCaption.textContent = img.legende || '';
+      lbCount.textContent = (index + 1) + ' / ' + courante.length;
+      lbBio.textContent = img.presentation || '';
+      lbTraits.replaceChildren();
+      (img.traits || []).forEach(t => {
+        const li = document.createElement('li');
+        li.textContent = t;
+        lbTraits.append(li);
+      });
+      lbFigure.classList.toggle('has-bio', !!img.presentation);
+      const plusieurs = courante.length > 1;
+      lightbox.querySelector('.lb-prev').hidden = !plusieurs;
+      lightbox.querySelector('.lb-next').hidden = !plusieurs;
+    }
+    function ouvrir(liste, i, depuis) {
+      courante = liste; index = i; retourFocus = depuis;
+      afficher();
+      lightbox.hidden = false;
+      document.body.style.overflow = 'hidden';
+      lightbox.querySelector('.lb-close').focus();
+    }
+    function fermer() {
+      lightbox.hidden = true;
+      document.body.style.overflow = '';
+      if (retourFocus) retourFocus.focus();
+    }
+    function bouger(pas) {
+      index = (index + pas + courante.length) % courante.length;
+      afficher();
+    }
+    lightbox.querySelector('.lb-close').addEventListener('click', fermer);
+    lightbox.querySelector('.lb-prev').addEventListener('click', () => bouger(-1));
+    lightbox.querySelector('.lb-next').addEventListener('click', () => bouger(1));
+    // Un clic sur le fond (hors image et boutons) ferme la visionneuse
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) fermer(); });
+    document.addEventListener('keydown', e => {
+      if (lightbox.hidden) return;
+      if (e.key === 'Escape') fermer();
+      else if (e.key === 'ArrowLeft') bouger(-1);
+      else if (e.key === 'ArrowRight') bouger(1);
+    });
+    // Glisser le doigt pour changer d'image
+    let x0 = null;
+    lightbox.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+    lightbox.addEventListener('touchend', e => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 50) bouger(dx < 0 ? 1 : -1);
+      x0 = null;
+    });
+  </script>
+</body>
+</html>
