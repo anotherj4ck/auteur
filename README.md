@@ -1,4 +1,4 @@
-# Gaël Rautureau · site d'auteur
+# anotherj4ck · site d'auteur
 
 Le site qui présente mes univers de fiction : science-fiction et fantasy. Chaque histoire a sa propre ambiance (couleurs, image de fond, typographie), avec un extrait, un résumé et une galerie de personnages.
 
@@ -37,4 +37,4 @@ Double-clic sur `index.html` : le site fonctionne sans serveur.
 - Visionneuse accessible : clavier (flèches, Échap), balayage au doigt sur téléphone, retour du focus à la vignette.
 - Mise en page adaptée au téléphone, animations coupées si le système demande moins de mouvement.
 
-© Gaël Rautureau. Textes et illustrations : tous droits réservés.
+© 2026 anotherj4ck. Textes et illustrations : tous droits réservés.
