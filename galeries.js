@@ -69,21 +69,5 @@ window.GALERIES = {
       traits: ["Rêveur", "Dévoué", "Prometteur"],
       alt: "Un garçon souriant, des livres sous le bras, dans un jardin à fontaine devant un bâtiment classique."
     }
-  ],
-  labyrinthe: [
-    {
-      mini: "assets/labyrinthe/perso-1-mini.webp",
-      grande: "assets/labyrinthe/perso-1.webp",
-      nom: "Aidan",
-      legende: "",
-      alt: "Un homme brun en long manteau noir marche seul sur un trottoir, au coucher du soleil."
-    },
-    {
-      mini: "assets/labyrinthe/perso-2-mini.webp",
-      grande: "assets/labyrinthe/perso-2.webp",
-      nom: "Marine",
-      legende: "",
-      alt: "Une jeune femme aux longs cheveux blonds et aux yeux bleus, assise au soleil dans une rue de pierre."
-    }
   ]
 };
