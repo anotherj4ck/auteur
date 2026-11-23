@@ -316,46 +316,6 @@
     }
     #ankoria { --accent: #d4820a; --dim: #8a5a0a; }
 
-    /* ===== LE LABYRINTHE DES ÂMES ===== */
-    /* Fiction onirique : gris de brume, lueur rose d'aube, brouillard qui dérive */
-    #labyrinthe {
-      --accent: #dcaaa2;
-      --dim: #8a7378;
-      --lab-text: rgba(232,222,226,0.88);
-      background: #0e0c10;
-    }
-    #labyrinthe .universe-bg {
-      background-image: url('assets/labyrinthe.webp');
-      filter: brightness(0.5) saturate(0.85) contrast(1.05);
-    }
-    #labyrinthe .universe-overlay {
-      background: linear-gradient(160deg,
-        rgba(14,12,16,0.86) 0%,
-        rgba(14,12,16,0.45) 55%,
-        rgba(220,170,162,0.12) 100%);
-    }
-    #labyrinthe .universe-number,
-    #labyrinthe .universe-subtitle,
-    #labyrinthe .meta-item { color: var(--dim); }
-    #labyrinthe .universe-extract p,
-    #labyrinthe .universe-description { color: var(--lab-text); }
-    #labyrinthe .extract-break { margin-top: 1.2rem; }
-    .mist {
-      position: absolute;
-      inset: -20%;
-      z-index: 1;
-      pointer-events: none;
-      background:
-        radial-gradient(ellipse 40% 25% at 30% 60%, rgba(232,222,226,0.07), transparent 70%),
-        radial-gradient(ellipse 35% 20% at 70% 40%, rgba(220,170,162,0.06), transparent 70%),
-        radial-gradient(ellipse 50% 30% at 50% 85%, rgba(232,222,226,0.05), transparent 70%);
-      animation: drift 38s ease-in-out infinite alternate;
-    }
-    @keyframes drift {
-      from { transform: translate3d(-4%, 0, 0); }
-      to   { transform: translate3d(4%, -3%, 0); }
-    }
-
     /* CONTENU UNIVERS */
     .universe-content {
       position: relative;
@@ -784,7 +744,7 @@
       html { scroll-behavior: auto; }
       .reveal { opacity: 1; transform: none; transition: none; }
       .hero-eyebrow, .hero-name, .hero-divider, .hero-tagline, .hero-scroll { animation: none; opacity: 1; }
-      .star, .status-dot, .scroll-line, .mist { animation: none; }
+      .star, .status-dot, .scroll-line { animation: none; }
     }
   </style>
 </head>
@@ -798,7 +758,6 @@
     <a href="#hero" class="nav-name">anotherj4ck</a>
     <ul class="nav-links">
       <li><a href="#ascendant">Ascendant</a></li>
-      <li><a href="#labyrinthe">Le Labyrinthe des Âmes</a></li>
       <li><a href="#greatland">Les Récits du Greatland</a></li>
       <li><a href="#ankoria">Ankoria 2099</a></li>
     </ul>
@@ -852,46 +811,7 @@
       </section>
     </div>
     <svg class="universe-transition" viewBox="0 0 1440 120" preserveAspectRatio="none">
-      <path d="M0,0 C360,120 1080,0 1440,80 L1440,120 L0,120 Z" fill="#0e0c10" opacity="0.95"/>
-    </svg>
-  </section>
-
-  <!-- LE LABYRINTHE DES ÂMES -->
-  <section class="universe" id="labyrinthe">
-    <div class="universe-bg"></div>
-    <div class="universe-overlay"></div>
-    <div class="mist" aria-hidden="true"></div>
-    <div class="universe-content">
-      <div class="universe-number reveal">II — Romance onirique</div>
-      <h2 class="universe-title reveal reveal-delay-1">Le Labyrinthe<br>des Âmes</h2>
-      <p class="universe-subtitle reveal reveal-delay-2">Quoi qu'il arrive, leurs chemins se rejoindront</p>
-      <div class="universe-body">
-        <div class="universe-extract reveal reveal-delay-2">
-          <p>Aidan chercha ses mots, mais avant qu'il ne puisse répondre, un son transperça l'air.</p>
-          <p class="extract-break">La cloche de la ville retentit. Trop forte. Anormalement forte.</p>
-          <p class="extract-break">Une douleur brutale lui traversa le crâne. […] Tout devint flou. Il n'y avait plus que la cloche, résonnant encore et encore, et ce flot de souvenirs qui l'envahissait sans retenue.</p>
-          <p class="extract-break">La douceur de sa main. Son regard bleu. Le son de sa voix. L'éclat de ses cheveux blonds au soleil.</p>
-          <p class="extract-break">Elle. Toujours elle.</p>
-        </div>
-        <div class="universe-info reveal reveal-delay-3">
-          <p class="universe-description">Aidan connaît Marine depuis toujours : elle est la sœur de son meilleur ami. Un soir d'hiver, dans un train immobilisé, ils se parlent vraiment pour la première fois, et il ne s'en remettra jamais. Des années après un aveu repoussé, ils ne se voient plus : elle s'apprête à se marier, lui s'efface lentement du monde. Puis le réel commence à se fissurer, et une nuit, leurs rêves se rejoignent dans un labyrinthe où chaque porte mène à ce qu'ils n'ont jamais osé se dire.</p>
-          <div class="universe-meta">
-            <div class="meta-item">Romance onirique</div>
-            <div class="meta-item">Roman</div>
-          </div>
-          <div class="universe-status">
-            <div class="status-dot"></div>
-            Soumis à l'édition
-          </div>
-        </div>
-      </div>
-      <section class="gallery reveal" aria-label="Personnages du Labyrinthe des Âmes">
-        <h3 class="gallery-title">Personnages</h3>
-        <ul class="gallery-grid" data-galerie="labyrinthe"></ul>
-      </section>
-    </div>
-    <svg class="universe-transition" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M0,30 C420,110 1020,0 1440,70 L1440,120 L0,120 Z" fill="#0d110b" opacity="0.97"/>
+      <path d="M0,0 C360,120 1080,0 1440,80 L1440,120 L0,120 Z" fill="#0d110b" opacity="0.95"/>
     </svg>
   </section>
 
@@ -901,7 +821,7 @@
     <div class="universe-overlay"></div>
     <div class="stars-container" id="stars"></div>
     <div class="universe-content">
-      <div class="universe-number reveal">III — Fantasy</div>
+      <div class="universe-number reveal">II — Fantasy</div>
       <h2 class="universe-title reveal reveal-delay-1">Les Récits<br>du Greatland</h2>
       <p class="universe-subtitle reveal reveal-delay-2">Entre les royaumes des hommes et des anciens</p>
       <div class="universe-body">
@@ -939,7 +859,7 @@
     <div class="universe-overlay"></div>
     <div class="grid-overlay"></div>
     <div class="universe-content">
-      <div class="universe-number reveal" style="color: #8a5a0a;">IV — Science-Fiction</div>
+      <div class="universe-number reveal" style="color: #8a5a0a;">III — Science-Fiction</div>
       <h2 class="universe-title reveal reveal-delay-1" style="color: #d4820a;">Ankoria 2099</h2>
       <p class="universe-subtitle reveal reveal-delay-2" style="color: #8a5a0a;">La Cité Mondiale. L'ordre parfait. Le mensonge total.</p>
       <div class="universe-body">
